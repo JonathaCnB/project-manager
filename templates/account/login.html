@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
 
-{% comment %} {% load crispy_forms_tags %} {% endcomment %}
+{% load crispy_forms_tags %}
 
 {% block title %}Entrar{% endblock %}
 
 {% block content %}
+<main class="px-3">
   <h1>Entrar</h1>
-  <div class="cols-6">
-    <form class="form-horizontal" action="." method="POST" enctype="multipart/form-data">
-      <div class="col-sm-6">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary">Salvar</button>
-        </div>
-      </div>
-    </form>
-  </div>
+  <form class="form-horizontal mt-5" action="." method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary mt-3">Salvar</button>
+    </div>
+  </form>
+<main class="px-3">
 {% endblock content %}
