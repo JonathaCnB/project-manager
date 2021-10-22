@@ -4,8 +4,8 @@
 
 ## Este projeto foi feito com:
 
-* [Python 3.8.9](https://www.python.org/)
-* [Django 3.1.8](https://www.djangoproject.com/)
+* [Python 3.9.7](https://www.python.org/)
+* [Django 3.2.8](https://www.djangoproject.com/)
 * [Bootstrap 4.0](https://getbootstrap.com/)
 
 ## Download & Instruções para instalação:
