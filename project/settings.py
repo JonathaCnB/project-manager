@@ -29,9 +29,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     # 3rd party
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     # LocalApps
     "users.apps.UsersConfig",
     "projects.apps.ProjectsConfig",
@@ -142,6 +142,8 @@ MEDIA_ROOT = "static/images"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 SITE_ID = 1
+
+LOGIN_REDIRECT_URL = "/"
 
 # Só precisa digitar a senha uma vez
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
