@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "crispy_forms",
     # LocalApps
     "users.apps.UsersConfig",
     "projects.apps.ProjectsConfig",
@@ -66,6 +67,8 @@ TEMPLATES = [
         },
     },
 ]
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 WSGI_APPLICATION = "project.wsgi.application"
 
@@ -145,6 +148,8 @@ SITE_ID = 1
 
 LOGIN_REDIRECT_URL = "/"
 
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 # Só precisa digitar a senha uma vez
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 # Não precisa de username
@@ -155,3 +160,5 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 # Email único
 ACCOUNT_UNIQUE_EMAIL = True
+# Lembrar do user logado
+ACCOUNT_SESSION_REMEMBER = True
