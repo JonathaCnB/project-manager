@@ -2,3 +2,5 @@ Django
 django-allauth
 django-crispy-forms
 django-htmx
+whitenoise
+dj-database-url
