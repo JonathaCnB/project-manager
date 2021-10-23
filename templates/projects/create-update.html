@@ -1,0 +1,14 @@
+<!-- create-update.html -->
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class='row'>
+    <div class='{% if object.id %}col-12 col-md-8{% else %}col-md-6 mx-auto{% endif %}'>
+        {% if not object.id %}
+            <h1>Cadastrar Projeto</h1>
+        {% endif %}
+        {% include 'projects/partials/forms.html' %}
+    </div>
+    
+</div>
+{% endblock content %}

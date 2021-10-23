@@ -34,6 +34,14 @@
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <!-- Bootstrap core JS -->
   <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- HTMX -->
+  <script src="https://unpkg.com/htmx.org@1.6.0"></script>
+  <script>
+    document.body.addEventListener('htmx:configRequest', (event)=>{
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}'
+    })
+  </script>
+  {% block end_script %}{% endblock end_script %}
 </body>
 
 </html>

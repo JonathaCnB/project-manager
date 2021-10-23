@@ -1,18 +1,158 @@
 <!-- index.html -->
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <main class="px-3">
-  <h1>Gestão de Projetos</h1>
   {% if user.is_authenticated %}
-    <p class="lead">
-      <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">
-        Cadastrar Projeto
-      </a>
-    </p>            
+    <div class="row">
+      <div class="col-12">
+        <h1>Gestão de Projetos</h1>
+        <h3 class="lead">
+          <a 
+            class='btn btn-lg btn-secondary fw-bold border-white bg-white'
+            href="{% url 'projects:create' %}">
+            Cadastrar Projeto
+          </a>
+        </h3>
+        <hr/>
+        <h3>Projetos</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nome do projeto</th>
+              <th>Data de início</th>
+              <th>Data de término</th>
+              <th>Valor do projeto</th>
+              <th>Risco</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for object in object_list %}
+              <tr id='project-{{ object.id }}'>
+                <td>
+                  <a
+                    id='project-{{object.id}}' 
+                    href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#calc_project_modal"
+                    onClick="clickButtonCalcProject('{{object.id}}')"
+                  />
+                    <i class="fa fa-calculator"></i> {{ object.name }}
+                  </a>
+                </td>
+                <td>{{ object.start_date|date:'d/m/Y'|default:'---' }}</td>
+                <td>{{ object.end_date|date:'d/m/Y'|default:'---' }}</td>
+                <td>R$ {{ object.value|default:'---' }}</td>
+                <td>{{ object.get_risk_display|default:'---' }}</td>
+                <td>
+                  <a href="{% url 'projects:update' object.id %}">
+                    <i class="fa fa-edit"></i>
+                  </a>
+                  <a 
+                    href="{{ object.get_delete_url }}"
+                    hx-post="{{ object.get_delete_url }}"
+                    hx-trigger='click' hx-confirm='Deletar esse projeto?'
+                    hx-target='#project-{{ object.id }}' hx-swap='outerHTML'
+                    style="padding-left: 7px"
+                  >
+                    <i class="fa fa-close no"></i>
+                  </a>
+                </td>
+              </tr>
+            {% empty %}
+              <h3>Sem projetos no momento</h3>
+            {% endfor %}
+          </tbody>
+        </table>        
+      </div>
+    </div>
   {% else %}
-    <p class="lead">Faça login ou cadastra-se para acessar os projetos</p>
+    <p class="lead">Faça login ou cadastre-se para acessar os projetos</p>
   {% endif %}
 </main>
+<!-- Modal -->
+<div 
+  class="modal fade" id="calc_project_modal" tabindex="-1"
+  data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="calc_project_modal_label" aria-hidden="true"
+/>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-bold" id="calc_project_modal_label">Simulador de investimento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method='GET' class='mb-3'>
+          {{form|crispy}}
+        </form>
+        <div id="result-box" class="result-card not-visible no positive_value"></div>
+        <input type="hidden" id='id_project_temp'>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
+{% block end_script %}
+  <script>
+    function clickButtonCalcProject(project_id) {
+      document.getElementById('id_project_temp').value = project_id;
+    }
+    const investment_value = document.getElementById('id_investment_value')
+    const calc_project_modal = document.getElementById('calc_project_modal')
+      
+    function searchValue(value) {
+      const result_box = document.getElementById('result-box');
+      const projectId = document.getElementById('id_project_temp').value;
+      
+      $.ajax({
+          type: 'GET',
+          url: '/calcule-risk/'+projectId+'/',
+          data : {
+              'input_value' : value,
+          },
+          success: (res) => {
+              result_box.innerHTML = "";
+              //const data = res.data
+              if (res.lower_value){
+                result_box.innerHTML = `<b>${res.lower_value}<b>`
+              } else {
+                result_box.classList.remove('no');
+                result_box.classList.add('positve_value');
+                result_box.innerHTML = `<b>${res.return_investment}<b>`
+              }
+          },
+          error: (err) => {
+              console.log(err);
+          }
+      });
+    }
+    
+    investment_value.addEventListener('keyup', e=>{
+      let result_box = document.getElementById('result-box');
+      let value_input = e.target.value
+      if (value_input.length > 0) {
+        if(result_box.classList.contains('not-visible')){
+          result_box.classList.remove('not-visible')
+        };
+        searchValue(e.target.value)
+      } else {
+        result_box.classList.add('not-visible');
+      }      
+    })    
+      
+    calc_project_modal.addEventListener('hidden.bs.modal', e=>{
+      let result_box = document.getElementById('result-box');
+      result_box.classList.add('not-visible');
+      result_box.innerHTML = "";
+      document.getElementById('id_investment_value').value = "";
+    });
+    
+  </script>
+{% endblock end_script %}
