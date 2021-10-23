@@ -36,7 +36,7 @@ python manage.py createsuperuser --username="admin" --email=""
 
 - [X] Implementar modelo de user personalizado
 - [X] Criar models conforme modelagem
-- [ ] CRUD Usuários
-- [ ] CRUD Projetos
-- [ ] Template de cálculo
+- [X] CRUD Usuários
+- [X] CRUD Projetos
+- [X] Template de cálculo
 
