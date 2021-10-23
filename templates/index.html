@@ -19,16 +19,18 @@
         <hr/>
         <h3>Projetos</h3>
         <table class="table">
-          <thead>
-            <tr>
-              <th>Nome do projeto</th>
-              <th>Data de início</th>
-              <th>Data de término</th>
-              <th>Valor do projeto</th>
-              <th>Risco</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
+          {% if object_list %}
+            <thead>
+              <tr>
+                <th>Nome do projeto</th>
+                <th>Data de início</th>
+                <th>Data de término</th>
+                <th>Valor do projeto</th>
+                <th>Risco</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+          {% endif %}
           <tbody>
             {% for object in object_list %}
               <tr id='project-{{ object.id }}'>
@@ -93,7 +95,7 @@
         <input type="hidden" id='id_project_temp'>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
       </div>
     </div>
   </div>
