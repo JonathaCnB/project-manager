@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "crispy_forms",
+    "django_htmx",
     # LocalApps
     "users.apps.UsersConfig",
     "projects.apps.ProjectsConfig",
@@ -46,6 +47,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "project.urls"
@@ -118,11 +120,17 @@ TIME_ZONE = "America/Manaus"
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
 USE_THOUSAND_SEPARATOR = True
+
+DATE_FORMAT = "d/m/Y"
+
+DATE_INPUT_FORMATS = (
+    '%d/%m/%Y',
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
