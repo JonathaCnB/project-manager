@@ -11,23 +11,23 @@ class Project(models.Model):
     )
     start_date = models.DateField(verbose_name="Data de início")
     end_date = models.DateField(verbose_name="Data de término")
-    is_active = models.BooleanField(default=True)
     value = models.DecimalField(
         verbose_name="Valor do projeto",
         max_digits=7,
         decimal_places=2,
     )
     CHOICE_STATUS_RISK = (
-        ("0", "Baixo"),
+        ("5", "Baixo"),
         ("1", "Médio"),
         ("2", "Alto"),
     )
     risk = models.CharField(
         max_length=1,
-        verbose_name="Risco ",
+        verbose_name="Risco",
         choices=CHOICE_STATUS_RISK,
     )
     participants = models.ManyToManyField(User, verbose_name="Participantes")
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "Projeto"
@@ -36,6 +36,9 @@ class Project(models.Model):
 
     def get_absolute_url(self):
         return reverse("projects:index")
+
+    def get_delete_url(self):
+        return reverse("projects:delete", kwargs={"id": self.id})
 
     def __str__(self) -> str:
         return self.name
